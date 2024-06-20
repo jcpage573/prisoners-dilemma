@@ -21,10 +21,6 @@ func CreatePrisoners() []pd.Prisoner {
 	prisoners := []pd.Prisoner{
 		{Name: "Random", Owner: "Jackson", Strategy: random},
 		{Name: "Mod 3 Prisoner", Owner: "Jackson", Strategy: defectCooperateTwiceThenDefect},
-		{Name: "Random", Owner: "Jackson", Strategy: random},
-		{Name: "Mod 3 Prisoner", Owner: "Jackson", Strategy: defectCooperateTwiceThenDefect},
-		{Name: "Random", Owner: "Jackson", Strategy: random},
-		{Name: "Mod 3 Prisoner", Owner: "Jackson", Strategy: defectCooperateTwiceThenDefect},
 	}
 	return prisoners
 }
