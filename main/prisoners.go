@@ -7,6 +7,7 @@ type generateChoice func(ownAnswers []bool, oppAnswers []bool) bool
 
 type Prisoner struct {
 	name     string
+	owner string
 	strategy generateChoice
 }
 
@@ -20,8 +21,8 @@ func defectCooperateTwiceThenDefect(oa []bool, opa []bool) bool {
 
 func createPrisoners() []Prisoner {
 	prisoners := []Prisoner{
-		{name: "Random", strategy: random},
-	 	{name: "Mod 3 Prisoner", strategy: defectCooperateTwiceThenDefect},
+		{name: "Random", owner: "Jackson", strategy: random},
+		{name: "Mod 3 Prisoner", owner: "Jackson", strategy: defectCooperateTwiceThenDefect},
 	}
 	return prisoners
 }
