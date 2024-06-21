@@ -58,8 +58,11 @@ func optimus(oa []bool, opa []bool) bool {
 
 func CreatePrisoners() []pd.Prisoner {
 	prisoners := []pd.Prisoner{
+		// Jackson
 		{Name: "Random", Owner: "Jackson", Strategy: random},
 		{Name: "Mod 3 Prisoner", Owner: "Jackson", Strategy: defectCooperateTwiceThenDefect},
+
+		// Hunter
 		{Name: "Tit for Tat", Owner: "Hunter", Strategy: titForTat},
 		{Name: "Megaton", Owner: "Hunter", Strategy: megatron},
 		{Name: "Optimus Prime", Owner: "Hunter", Strategy: optimus},
