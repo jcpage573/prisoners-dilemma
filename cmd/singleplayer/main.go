@@ -14,7 +14,7 @@ func random(oa []bool, opa []bool) bool {
 }
 
 func defectCooperateTwiceThenDefect(oa []bool, opa []bool) bool {
-	return len(oa) % 3 != 0
+	return len(oa)%3 != 0
 }
 
 func CreatePrisoners() []pd.Prisoner {
