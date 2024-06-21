@@ -61,9 +61,9 @@ func CreatePrisoners() []pd.Prisoner {
 		// Jackson
 		{Name: "Random", Owner: "Jackson", Strategy: random},
 		{Name: "Mod 3 Prisoner", Owner: "Jackson", Strategy: defectCooperateTwiceThenDefect},
-		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
-		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
-		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
+		{Name: "Defect", Owner: "Jackson", Strategy: func([]bool, []bool) bool { return false }},
+		{Name: "Defect", Owner: "Jackson", Strategy: func([]bool, []bool) bool { return false }},
+		{Name: "Defect", Owner: "Jackson", Strategy: func([]bool, []bool) bool { return false }},
 
 		// Hunter
 		{Name: "Tit for Tat", Owner: "Hunter", Strategy: titForTat},
@@ -74,10 +74,10 @@ func CreatePrisoners() []pd.Prisoner {
 
 		// ChatGPT
 		{Name: "T4T Forgiveness", Owner: "ChatGPT", Strategy: titForTatWithForgiveness}, // Alex
-		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
-		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
-		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
-		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
+		{Name: "Defect", Owner: "ChatGPT", Strategy: func([]bool, []bool) bool { return false }},
+		{Name: "Defect", Owner: "ChatGPT", Strategy: func([]bool, []bool) bool { return false }},
+		{Name: "Defect", Owner: "ChatGPT", Strategy: func([]bool, []bool) bool { return false }},
+		{Name: "Defect", Owner: "ChatGPT", Strategy: func([]bool, []bool) bool { return false }},
 	}
 	return prisoners
 }
