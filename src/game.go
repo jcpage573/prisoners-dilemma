@@ -17,7 +17,7 @@ type Game struct {
 	Player2        Prisoner
 }
 
-func (g Game) scores() (p1 int, p2 int) {
+func (g Game) Scores() (p1 int, p2 int) {
 	p1Score := 0
 	p2Score := 0
 	for i := range g.Player1Answers {
@@ -39,7 +39,7 @@ func (g Game) scores() (p1 int, p2 int) {
 }
 
 func (g Game) Results() string {
-	p1score, p2score := g.scores()
+	p1score, p2score := g.Scores()
 	res := fmt.Sprintf("%-15s %-10s\n", "Prisoner", "Score")
 	res += fmt.Sprintf("%-15s %-10d\n", g.Player1.Name, p1score)
 	res += fmt.Sprintf("%-15s %-10d\n", g.Player2.Name, p2score)

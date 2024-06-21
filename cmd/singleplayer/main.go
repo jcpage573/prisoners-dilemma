@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"sort"
 
 	pd "github.com/jcpage573/prisoners-dilemma/src"
 )
@@ -25,7 +26,6 @@ func titForTat(oa []bool, opa []bool) bool {
 	if n < 1 {
 		return true
 	}
-
 	return opa[n-1]
 }
 
@@ -38,9 +38,30 @@ func CreatePrisoners() []pd.Prisoner {
 	return prisoners
 }
 
+func prettyPrintMap(m map[string]int) {
+	// Extract keys and sort them
+	keys := make([]string, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+
+	// Print the map in a pretty format
+	fmt.Println("Player Scores:")
+	fmt.Println("---------------")
+	for _, key := range keys {
+		fmt.Printf("%-15s : %d\n", key, m[key])
+	}
+}
+
 func main() {
+	totals := make(map[string]int) // Initialize the map
 	prisoners := CreatePrisoners()
 	for _, i := range pd.PlayGames(prisoners) {
 		fmt.Println(i.Results())
+		p1s, p2s := i.Scores()
+		totals[i.Player1.Name] += p1s
+		totals[i.Player2.Name] += p2s
 	}
+	prettyPrintMap(totals)
 }
