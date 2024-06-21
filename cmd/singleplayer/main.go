@@ -8,6 +8,9 @@ import (
 )
 
 // Example Strategies
+// oa: own answers
+// opa: opponent answers
+// return `true` to cooperate, `false` to defect
 
 func random(oa []bool, opa []bool) bool {
 	return rand.Intn(2) == 1
@@ -16,6 +19,10 @@ func random(oa []bool, opa []bool) bool {
 func defectCooperateTwiceThenDefect(oa []bool, opa []bool) bool {
 	return len(oa)%3 != 0
 }
+
+// func titForTat(oa []bool, opa []bool) bool {
+// 	if len(oa) < 1 {}
+// }
 
 func CreatePrisoners() []pd.Prisoner {
 	prisoners := []pd.Prisoner{
