@@ -20,14 +20,20 @@ func defectCooperateTwiceThenDefect(oa []bool, opa []bool) bool {
 	return len(oa)%3 != 0
 }
 
-// func titForTat(oa []bool, opa []bool) bool {
-// 	if len(oa) < 1 {}
-// }
+func titForTat(oa []bool, opa []bool) bool {
+	n := len(oa)
+	if n < 1 {
+		return true
+	}
+
+	return opa[n-1]
+}
 
 func CreatePrisoners() []pd.Prisoner {
 	prisoners := []pd.Prisoner{
 		{Name: "Random", Owner: "Jackson", Strategy: random},
 		{Name: "Mod 3 Prisoner", Owner: "Jackson", Strategy: defectCooperateTwiceThenDefect},
+		{Name: "Tit for Tat", Owner: "Hunter", Strategy: titForTat},
 	}
 	return prisoners
 }
