@@ -1,4 +1,4 @@
-package src
+package prisoner
 
 type generateChoice func(ownAnswers []bool, oppAnswers []bool) bool
 
