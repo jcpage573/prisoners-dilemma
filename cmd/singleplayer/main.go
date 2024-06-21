@@ -131,13 +131,13 @@ func main() {
 			// fmt.Println(i.Results())
 			p1s, p2s := i.Scores()
 			totals[i.Player1.Name] += p1s
-			totals[i.Player1.Owner] += p1s
-			oTotals[i.Player2.Name] += p2s
+			oTotals[i.Player1.Owner] += p1s
+			totals[i.Player2.Name] += p2s
 			oTotals[i.Player2.Owner] += p2s
 			ownerCounts[i.Player1.Owner]++
 			ownerCounts[i.Player2.Owner]++
 		}
 		prettyPrintMap(totals, "\nPlayer Scores")
-		printAverageScores(totals, ownerCounts, "\n\nOwner Average Scores")
+		printAverageScores(oTotals, ownerCounts, "\n\nOwner Average Scores")
 	}
 }
