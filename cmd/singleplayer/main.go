@@ -63,7 +63,8 @@ func CreatePrisoners() []pd.Prisoner {
 		{Name: "Tit for Tat", Owner: "Hunter", Strategy: titForTat},
 		{Name: "Megaton", Owner: "Hunter", Strategy: megatron},
 		{Name: "Optimus Prime", Owner: "Hunter", Strategy: optimus},
-		{Name: "Ted", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
+		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
+		{Name: "Coop", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return true }},
 	}
 	return prisoners
 }
