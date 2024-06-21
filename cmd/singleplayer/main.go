@@ -30,6 +30,18 @@ func titForTat(oa []bool, opa []bool) bool {
 	return opa[n-1]
 }
 
+func titForTatWithForgiveness(oa []bool, opa []bool) bool {
+	n := len(oa)
+	if n < 1 {
+		return true
+	}
+	// 10% chance to forgive a defection
+	if !opa[n-1] && rand.Float64() < 0.1 {
+		return true
+	}
+	return opa[n-1]
+}
+
 func megatron(oa []bool, opa []bool) bool {
 	if len(oa) < 10 {
 		return rand.Intn(2) == 1
@@ -68,6 +80,9 @@ func CreatePrisoners() []pd.Prisoner {
 		{Name: "Optimus Prime", Owner: "Hunter", Strategy: optimus},
 		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
 		{Name: "Coop", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return true }},
+
+		// ChatGPT
+		{Name: "Tit for Tat with Forgiveness", Owner: "ChatGPT", Strategy: titForTatWithForgiveness}, // Alex
 	}
 	return prisoners
 }
