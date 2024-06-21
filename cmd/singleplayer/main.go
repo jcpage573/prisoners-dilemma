@@ -30,11 +30,40 @@ func titForTat(oa []bool, opa []bool) bool {
 	return opa[n-1]
 }
 
+func megatron(oa []bool, opa []bool) bool {
+	if len(oa) < 10 {
+		return rand.Intn(2) == 1
+	}
+
+	for _, a := range opa {
+		if !a {
+			return false
+		}
+	}
+	return rand.Intn(2) == 1
+}
+
+func optimus(oa []bool, opa []bool) bool {
+	if len(oa) < 3 {
+		return titForTat(oa, opa)
+	}
+
+	for _, a := range opa {
+		if !a {
+			return false
+		}
+	}
+	return titForTat(oa, opa)
+}
+
 func CreatePrisoners() []pd.Prisoner {
 	prisoners := []pd.Prisoner{
 		{Name: "Random", Owner: "Jackson", Strategy: random},
 		{Name: "Mod 3 Prisoner", Owner: "Jackson", Strategy: defectCooperateTwiceThenDefect},
 		{Name: "Tit for Tat", Owner: "Hunter", Strategy: titForTat},
+		{Name: "Megaton", Owner: "Hunter", Strategy: megatron},
+		{Name: "Optimus Prime", Owner: "Hunter", Strategy: optimus},
+		{Name: "Ted", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
 	}
 	return prisoners
 }
@@ -67,7 +96,7 @@ func main() {
 		totals := make(map[string]int) // Initialize the map
 		prisoners := CreatePrisoners()
 		for _, i := range pd.PlayGames(prisoners, *n) {
-			fmt.Println(i.Results())
+			// fmt.Println(i.Results())
 			p1s, p2s := i.Scores()
 			totals[i.Player1.Name] += p1s
 			totals[i.Player2.Name] += p2s
