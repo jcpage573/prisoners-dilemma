@@ -55,19 +55,6 @@ func megatron(oa []bool, opa []bool) bool {
 	return rand.Intn(2) == 1
 }
 
-func optimus(oa []bool, opa []bool) bool {
-	if len(oa) < 3 {
-		return titForTat(oa, opa)
-	}
-
-	for _, a := range opa {
-		if !a {
-			return false
-		}
-	}
-	return titForTat(oa, opa)
-}
-
 func CreatePrisoners() []pd.Prisoner {
 	prisoners := []pd.Prisoner{
 		// Jackson
@@ -77,12 +64,11 @@ func CreatePrisoners() []pd.Prisoner {
 		// Hunter
 		{Name: "Tit for Tat", Owner: "Hunter", Strategy: titForTat},
 		{Name: "Megaton", Owner: "Hunter", Strategy: megatron},
-		{Name: "Optimus Prime", Owner: "Hunter", Strategy: optimus},
 		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
 		{Name: "Coop", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return true }},
 
 		// ChatGPT
-		{Name: "Tit for Tat with Forgiveness", Owner: "ChatGPT", Strategy: titForTatWithForgiveness}, // Alex
+		{Name: "T4T Forgiveness", Owner: "ChatGPT", Strategy: titForTatWithForgiveness}, // Alex
 	}
 	return prisoners
 }
