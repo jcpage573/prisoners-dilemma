@@ -91,6 +91,7 @@ func main() {
 		// manualPlay()
 	} else {
 		prisoners := CreatePrisoners()
-		game.Sim(prisoners, *n)
+		_, totals := game.Play(prisoners, *n)
+		totals.PrintTotals()
 	}
 }

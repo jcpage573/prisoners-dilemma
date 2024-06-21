@@ -22,22 +22,23 @@ type Game struct {
 	Player2        prisoner.Prisoner
 }
 
-func Sim(prisoners []prisoner.Prisoner, n int) {
-	totals := make(map[string]int)
-	oTotals := make(map[string]int)
-	ownerCounts := make(map[string]int)
-	for _, i := range Play(prisoners, n) {
-		// fmt.Println(i.Results())
-		p1s, p2s := i.Scores()
-		totals[i.Player1.Name] += p1s
-		oTotals[i.Player1.Owner] += p1s
-		totals[i.Player2.Name] += p2s
-		oTotals[i.Player2.Owner] += p2s
-		ownerCounts[i.Player1.Owner]++
-		ownerCounts[i.Player2.Owner]++
-	}
-	prettyPrintMap(totals, "\nPlayer Scores")
-	printAverageScores(oTotals, ownerCounts, "\n\nOwner Average Scores")
+type Totals struct {
+	OwnerTotals    map[string]int
+	PrisonerTotals map[string]int
+	OwnerCounts    map[string]int
+}
+
+func (t Totals) PrintTotals() {
+	prettyPrintMap(t.PrisonerTotals, "\nPlayer Scores")
+	printAverageScores(t.OwnerTotals, t.OwnerCounts, "\n\nOwner Average Scores")
+}
+
+func createTotals() Totals {
+	totals := Totals{}
+	totals.PrisonerTotals = make(map[string]int)
+	totals.OwnerTotals = make(map[string]int)
+	totals.OwnerCounts = make(map[string]int)
+	return totals
 }
 
 func (g Game) Scores() (p1 int, p2 int) {
@@ -69,8 +70,9 @@ func (g Game) Results() string {
 	return res
 }
 
-func Play(p []prisoner.Prisoner, n int) []Game {
+func Play(p []prisoner.Prisoner, n int) ([]Game, Totals) {
 	games := []Game{}
+	totals := createTotals()
 	for i := 0; i < n; i++ {
 		for _, combo := range WomboCombo(p) {
 			player1 := combo[0]
@@ -83,9 +85,20 @@ func Play(p []prisoner.Prisoner, n int) []Game {
 			}
 			game := Game{Player1Answers: player1choices, Player2Answers: player2choices, Player1: player1, Player2: player2}
 			games = append(games, game)
+
+			// Increment totals
+			p1s, p2s := game.Scores()
+			totals.PrisonerTotals[player1.Name] += p1s
+			totals.PrisonerTotals[player2.Name] += p2s
+
+			totals.OwnerTotals[player1.Owner] += p1s
+			totals.OwnerTotals[player2.Owner] += p2s
+
+			totals.OwnerCounts[player1.Owner]++
+			totals.OwnerCounts[player2.Owner]++
 		}
 	}
-	return games
+	return games, totals
 }
 
 func WomboCombo(l []prisoner.Prisoner) [][2]prisoner.Prisoner {
