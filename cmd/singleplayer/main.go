@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"math/rand"
 	"sort"
 
@@ -73,7 +74,7 @@ func CreatePrisoners() []pd.Prisoner {
 	return prisoners
 }
 
-func prettyPrintMap(m map[string]int) {
+func prettyPrintMap(m map[string]int, title string) {
 	// Extract keys and sort them
 	keys := make([]string, 0, len(m))
 	for key := range m {
@@ -82,10 +83,26 @@ func prettyPrintMap(m map[string]int) {
 	sort.Strings(keys)
 
 	// Print the map in a pretty format
-	fmt.Println("Player Scores:")
+	fmt.Printf("%s:\n", title)
 	fmt.Println("---------------")
 	for _, key := range keys {
 		fmt.Printf("%-15s : %d\n", key, m[key])
+	}
+}
+
+// Function to calculate and print average scores
+func printAverageScores(totals map[string]int, counts map[string]int, title string) {
+	keys := make([]string, 0, len(counts))
+	for key := range counts {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+
+	fmt.Printf("%s:\n", title)
+	fmt.Println("---------------")
+	for _, key := range keys {
+		average := float64(totals[key]) / float64(counts[key])
+		fmt.Printf("%-15s : %.2f\n", key, average)
 	}
 }
 
@@ -95,17 +112,24 @@ func main() {
 	flag.Parse()
 
 	if *manual {
-		panic("NOT IMPLEMENTED")
+		log.Fatalln("NO MANUAL")
 		// manualPlay()
 	} else {
-		totals := make(map[string]int) // Initialize the map
+		totals := make(map[string]int)      // Initialize the map for player totals
+		ownerCounts := make(map[string]int) // Initialize the map for player counts
 		prisoners := CreatePrisoners()
 		for _, i := range pd.PlayGames(prisoners, *n) {
 			// fmt.Println(i.Results())
 			p1s, p2s := i.Scores()
 			totals[i.Player1.Name] += p1s
+			totals[i.Player1.Owner] += p1s
 			totals[i.Player2.Name] += p2s
+			totals[i.Player2.Owner] += p2s
+			ownerCounts[i.Player1.Owner]++
+			ownerCounts[i.Player2.Owner]++
 		}
-		prettyPrintMap(totals)
+		prettyPrintMap(totals, "\nPlayer Scores")
+		// prettyPrintMap(ownerTotals, "\n\nOwner Scores")
+		printAverageScores(totals, ownerCounts, "\n\nOwner Average Scores")
 	}
 }
