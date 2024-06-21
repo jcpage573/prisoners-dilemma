@@ -61,15 +61,23 @@ func CreatePrisoners() []pd.Prisoner {
 		// Jackson
 		{Name: "Random", Owner: "Jackson", Strategy: random},
 		{Name: "Mod 3 Prisoner", Owner: "Jackson", Strategy: defectCooperateTwiceThenDefect},
+		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
+		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
+		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
 
 		// Hunter
 		{Name: "Tit for Tat", Owner: "Hunter", Strategy: titForTat},
 		{Name: "Megaton", Owner: "Hunter", Strategy: megatron},
 		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
-		// {Name: "Coop", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return true }},
+		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
+		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
 
 		// ChatGPT
 		{Name: "T4T Forgiveness", Owner: "ChatGPT", Strategy: titForTatWithForgiveness}, // Alex
+		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
+		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
+		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
+		{Name: "Defect", Owner: "Hunter", Strategy: func([]bool, []bool) bool { return false }},
 	}
 	return prisoners
 }
@@ -115,21 +123,21 @@ func main() {
 		log.Fatalln("NO MANUAL")
 		// manualPlay()
 	} else {
-		totals := make(map[string]int)      // Initialize the map for player totals
-		ownerCounts := make(map[string]int) // Initialize the map for player counts
+		totals := make(map[string]int)
+		oTotals := make(map[string]int)
+		ownerCounts := make(map[string]int)
 		prisoners := CreatePrisoners()
 		for _, i := range pd.PlayGames(prisoners, *n) {
 			// fmt.Println(i.Results())
 			p1s, p2s := i.Scores()
 			totals[i.Player1.Name] += p1s
 			totals[i.Player1.Owner] += p1s
-			totals[i.Player2.Name] += p2s
-			totals[i.Player2.Owner] += p2s
+			oTotals[i.Player2.Name] += p2s
+			oTotals[i.Player2.Owner] += p2s
 			ownerCounts[i.Player1.Owner]++
 			ownerCounts[i.Player2.Owner]++
 		}
 		prettyPrintMap(totals, "\nPlayer Scores")
-		// prettyPrintMap(ownerTotals, "\n\nOwner Scores")
 		printAverageScores(totals, ownerCounts, "\n\nOwner Average Scores")
 	}
 }
