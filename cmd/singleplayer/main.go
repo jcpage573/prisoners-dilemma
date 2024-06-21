@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"math/rand"
 	"sort"
@@ -55,13 +56,22 @@ func prettyPrintMap(m map[string]int) {
 }
 
 func main() {
-	totals := make(map[string]int) // Initialize the map
-	prisoners := CreatePrisoners()
-	for _, i := range pd.PlayGames(prisoners) {
-		fmt.Println(i.Results())
-		p1s, p2s := i.Scores()
-		totals[i.Player1.Name] += p1s
-		totals[i.Player2.Name] += p2s
+	n := flag.Int("n", 200, "Number of games to play")
+	manual := flag.Bool("manual", false, "Play the game manually via CLI")
+	flag.Parse()
+
+	if *manual {
+		panic("NOT IMPLEMENTED")
+		// manualPlay()
+	} else {
+		totals := make(map[string]int) // Initialize the map
+		prisoners := CreatePrisoners()
+		for _, i := range pd.PlayGames(prisoners, *n) {
+			fmt.Println(i.Results())
+			p1s, p2s := i.Scores()
+			totals[i.Player1.Name] += p1s
+			totals[i.Player2.Name] += p2s
+		}
+		prettyPrintMap(totals)
 	}
-	prettyPrintMap(totals)
 }

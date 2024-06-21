@@ -46,6 +46,25 @@ func (g Game) Results() string {
 	return res
 }
 
+func PlayGames(p []Prisoner, n int) []Game {
+	games := []Game{}
+	for i := 0; i < n; i++ {
+		for _, combo := range WomboCombo(p) {
+			player1 := combo[0]
+			player2 := combo[1]
+			player1choices := []bool{}
+			player2choices := []bool{}
+			for j := 0; j < gameLength; j++ {
+				player1choices = append(player1choices, player1.Strategy(player1choices, player2choices))
+				player2choices = append(player2choices, player2.Strategy(player2choices, player1choices))
+			}
+			game := Game{Player1Answers: player1choices, Player2Answers: player2choices, Player1: player1, Player2: player2}
+			games = append(games, game)
+		}
+	}
+	return games
+}
+
 func WomboCombo(l []Prisoner) [][2]Prisoner {
 	p2 := 1
 	max := len(l)
@@ -64,23 +83,4 @@ func WomboCombo(l []Prisoner) [][2]Prisoner {
 
 	}
 	return ret
-
-}
-
-func PlayGames(p []Prisoner) []Game {
-	combos := WomboCombo(p)
-	games := []Game{}
-	for _, combo := range combos {
-		player1 := combo[0]
-		player2 := combo[1]
-		player1choices := []bool{}
-		player2choices := []bool{}
-		for range gameLength {
-			player1choices = append(player1choices, player1.Strategy(player1choices, player2choices))
-			player2choices = append(player2choices, player2.Strategy(player2choices, player1choices))
-		}
-		game := Game{Player1Answers: player1choices, Player2Answers: player2choices, Player1: player1, Player2: player2}
-		games = append(games, game)
-	}
-	return games
 }
