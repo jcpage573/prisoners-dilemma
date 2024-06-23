@@ -10,6 +10,11 @@ func TestHandler(w http.ResponseWriter, r *http.Request) { w.Write([]byte("Erd T
 
 // NewPrisoner handles requests to /user/someuser
 func NewPrisoner(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 	// Extract the user part from the URL
 	user := strings.TrimPrefix(r.URL.Path, "/user/")
 	if user == "" || user == "/" {
@@ -17,6 +22,5 @@ func NewPrisoner(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Process the request with the extracted user
 	fmt.Fprintf(w, "New prisoner created for user: %s", user)
 }
