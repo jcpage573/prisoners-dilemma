@@ -8,6 +8,15 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/test", server.TestHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	// New mux
+	mux := http.NewServeMux()
+
+	// Register routes here
+	mux.HandleFunc("/test", server.TestHandler)
+
+	// Wrap the mux in middleware
+	server := server.NewLogger(mux)
+
+	// Start the server
+	log.Fatal(http.ListenAndServe(":8080", server))
 }
