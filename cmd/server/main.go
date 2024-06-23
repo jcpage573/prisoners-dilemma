@@ -13,6 +13,7 @@ func main() {
 
 	// Register routes here
 	mux.HandleFunc("/test", server.TestHandler)
+	mux.HandleFunc("/user/", server.NewPrisoner)
 
 	// Wrap the mux in middleware
 	server := server.NewLogger(mux)
