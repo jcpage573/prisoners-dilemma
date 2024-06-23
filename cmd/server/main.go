@@ -3,9 +3,11 @@ package main
 import (
 	"log"
 	"net/http"
+
+	"github.com/jcpage573/prisoners-dilemma/internal/server"
 )
 
 func main() {
-	http.HandleFunc("/test", func(w http.ResponseWriter, r *http.Request) { w.Write([]byte("Erd Tree!")) })
+	http.HandleFunc("/test", server.TestHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
