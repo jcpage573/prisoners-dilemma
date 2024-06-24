@@ -1,6 +1,9 @@
 package server
 
 import (
+	"crypto/rand"
+	"crypto/sha256"
+	"encoding/base64"
 	"fmt"
 	"net"
 	"net/http"
@@ -35,13 +38,25 @@ func (ward *Warden) NewPrisoner(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	code, err := storage.NewCommand("SET", user, "hash(radagon)").Execute(ward.store.conn)
+	// Generate a new API key
+	apiKey, err := generateAPIKey()
+	if err != nil {
+		http.Error(w, "Failed to generate API key", http.StatusInternalServerError)
+		return
+	}
+
+	// Hash the user and API key
+	userHash := hashString(user)
+	apiKeyHash := hashString(apiKey)
+
+	// Store the hashed API key with the hashed user as the key
+	code, err := storage.NewCommand("SET", userHash, apiKeyHash).Execute(ward.store.conn)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Failed to create new user: %s (code %d)", err.Error(), code), http.StatusInternalServerError)
 		return
 	}
 
-	fmt.Fprintf(w, "created new prisoner '%s'\nyour api key is %s\nSTORE THIS SOMEWHERE", user, "hash(radagon)")
+	fmt.Fprintf(w, "Created new prisoner '%s'\nYour API key is %s\nSTORE THIS SOMEWHERE SAFE", user, apiKey)
 }
 
 func (ward *Warden) GetPrisoner(w http.ResponseWriter, r *http.Request) {
@@ -60,4 +75,19 @@ func stripUser(r *http.Request) (string, error) {
 		return "", fmt.Errorf("invalid or unspecified user '%s'", user)
 	}
 	return user, nil
+}
+
+func generateAPIKey() (string, error) {
+	b := make([]byte, 32)
+	_, err := rand.Read(b)
+	if err != nil {
+		return "", err
+	}
+	return base64.URLEncoding.EncodeToString(b), nil
+}
+
+func hashString(s string) string {
+	h := sha256.New()
+	h.Write([]byte(s))
+	return base64.URLEncoding.EncodeToString(h.Sum(nil))
 }
