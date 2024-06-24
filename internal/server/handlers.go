@@ -22,12 +22,29 @@ func NewWarden() Warden {
 }
 
 func (ward *Warden) NewPrisoner(w http.ResponseWriter, r *http.Request) {
-	// Extract the user part from the URL
-	user := strings.TrimPrefix(r.URL.Path, "/user/")
-	if user == "" || user == "/" {
-		http.Error(w, "User not specified", http.StatusBadRequest)
+	user, err := stripUser(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	fmt.Println("PRISREQ", user, "!!")
+	fmt.Println("POSTPRISREQ", user, "!!")
+}
+
+func (ward *Warden) GetPrisoner(w http.ResponseWriter, r *http.Request) {
+	user, err := stripUser(r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	fmt.Println("GETPRISREQ", user, "!!")
+}
+
+func stripUser(r *http.Request) (string, error) {
+	user := strings.TrimPrefix(r.URL.Path, "/user/")
+	if user == "" || user == "/" {
+		return "", fmt.Errorf("invalid or unspecified user '%s'", user)
+	}
+	return user, nil
 }

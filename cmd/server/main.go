@@ -16,12 +16,13 @@ func main() {
 
 	// Register public routes
 	mux.HandleFunc("/test", server.TestHandler)
+	mux.HandleFunc("POST /user/", warden.NewPrisoner)
 
 	// Create a new mux for authenticated routes
 	authMux := http.NewServeMux()
 
 	// Register authenticated routes
-	authMux.HandleFunc("POST /user/", warden.NewPrisoner)
+	authMux.HandleFunc("GET /user/", warden.GetPrisoner)
 
 	// Wrap the authMux in auth middleware
 	authHandler := server.NewAuth(authMux)
