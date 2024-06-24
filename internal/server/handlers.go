@@ -16,23 +16,5 @@ func NewPrisoner(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	switch r.Method {
-	case http.MethodGet:
-		handleGetPrisoner(w, r, user)
-	case http.MethodPost:
-		handlePostPrisoner(w, r, user)
-	default:
-		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
-	}
-}
-
-func handleGetPrisoner(w http.ResponseWriter, r *http.Request, user string) {
-	// Here you would typically fetch the prisoner's data
-	// For now, we'll just return a placeholder message
-	fmt.Fprintf(w, "Prisoner data for user: %s", user)
-}
-
-func handlePostPrisoner(w http.ResponseWriter, r *http.Request, user string) {
-	// This is your existing logic for creating a new prisoner
-	fmt.Fprintf(w, "New prisoner created for user: %s", user)
+	fmt.Println("PRISREQ", user, "!!")
 }

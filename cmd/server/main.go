@@ -13,10 +13,10 @@ func main() {
 
 	// Register routes here
 	mux.HandleFunc("/test", server.TestHandler)
-	mux.HandleFunc("/user/", server.NewPrisoner)
+	mux.HandleFunc("POST /user/", server.NewPrisoner)
 
 	// Wrap the mux in middleware
-	server := server.Logger(mux)
+	server := server.Logger(server.NewAuth(mux))
 
 	// Start the server
 	log.Fatal(http.ListenAndServe(":8080", server))
