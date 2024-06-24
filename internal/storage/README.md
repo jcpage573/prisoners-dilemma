@@ -6,7 +6,7 @@ As of right now I don't see any reason to use anything beyond simple key-value s
 
 We could use:
 - Garnet (Microsoft, C#)
-- [Valkey](https://github.com/valkey-io/valkey) (Google, Oracle, C)
+- **[Valkey](https://github.com/valkey-io/valkey) (Google, Oracle, C)**
 
 or if we don't want to use RESP
 - Memcached (Meta)
@@ -21,3 +21,14 @@ As a new user, my first step is to get an API key, which will verify the identit
 - We can use the username to get other user attributes, like `{name}:games` or `{game id}:{name}` etc.
 
 Will continue to update this doc as we go.
+
+## Interface
+I propose the following interface:
+```go
+type RespStore interface {
+    Set(string, string)
+    SetEx(string, string, int)
+    Get(string)
+    Delete(string)
+}
+```
