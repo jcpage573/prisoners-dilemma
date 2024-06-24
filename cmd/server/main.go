@@ -11,9 +11,12 @@ func main() {
 	// New mux
 	mux := http.NewServeMux()
 
+	// Handler
+	warden := server.NewWarden()
+
 	// Register routes here
 	mux.HandleFunc("/test", server.TestHandler)
-	mux.HandleFunc("POST /user/", server.NewPrisoner)
+	mux.HandleFunc("POST /user/", warden.NewPrisoner)
 
 	// Wrap the mux in middleware
 	server := server.Logger(server.NewAuth(mux))
