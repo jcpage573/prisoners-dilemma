@@ -41,7 +41,7 @@ func (ward *Warden) NewPrisoner(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("POSTPRISREQ", user, "!!")
+	fmt.Fprintf(w, "created new prisoner '%s'\nyour api key is %s\nSTORE THIS SOMEWHERE", user, "hash(radagon)")
 }
 
 func (ward *Warden) GetPrisoner(w http.ResponseWriter, r *http.Request) {
