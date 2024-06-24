@@ -7,18 +7,12 @@ import (
 )
 
 // Logger is a middleware handler that does request logging
-type Logger struct {
-	handler http.Handler
-}
-
-func (l *Logger) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	start := time.Now()
-	l.handler.ServeHTTP(w, r)
-	log.Printf("%s %s %v", r.Method, r.URL.Path, time.Since(start))
-}
-
-func NewLogger(handlerToWrap http.Handler) *Logger {
-	return &Logger{handlerToWrap}
+func Logger(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		start := time.Now()
+		next.ServeHTTP(w, req)
+		log.Printf("%s %s %s", req.Method, req.RequestURI, time.Since(start))
+	})
 }
 
 // Auth is a middleware handler that verifies user requestor identities

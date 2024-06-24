@@ -16,7 +16,7 @@ func main() {
 	mux.HandleFunc("/user/", server.NewPrisoner)
 
 	// Wrap the mux in middleware
-	server := server.NewLogger(mux)
+	server := server.Logger(mux)
 
 	// Start the server
 	log.Fatal(http.ListenAndServe(":8080", server))
