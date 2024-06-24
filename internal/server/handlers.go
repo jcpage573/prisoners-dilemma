@@ -38,6 +38,7 @@ func (ward *Warden) NewPrisoner(w http.ResponseWriter, r *http.Request) {
 	code, err := storage.NewCommand("SET", user, "hash(radagon)").Execute(ward.store.conn)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Failed to create new user: %s (code %d)", err.Error(), code), http.StatusInternalServerError)
+		return
 	}
 
 	fmt.Println("POSTPRISREQ", user, "!!")
