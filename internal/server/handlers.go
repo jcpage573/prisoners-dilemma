@@ -45,12 +45,8 @@ func (ward *Warden) NewPrisoner(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Hash the user and API key
-	userHash := hashString(user)
-	apiKeyHash := hashString(apiKey)
-
 	// Store the hashed API key with the hashed user as the key
-	code, err := storage.NewCommand("SET", userHash, apiKeyHash).Execute(ward.store.conn)
+	code, err := storage.NewCommand("SET", hashString(apiKey), user).Execute(ward.store.conn)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Failed to create new user: %s (code %d)", err.Error(), code), http.StatusInternalServerError)
 		return
