@@ -5,12 +5,19 @@ import (
 	"net"
 	"net/http"
 	"strings"
+
+	"github.com/jcpage573/prisoners-dilemma/internal/storage"
 )
 
 func TestHandler(w http.ResponseWriter, r *http.Request) { w.Write([]byte("Erd Tree!")) }
 
 type Warden struct {
-	store net.Conn
+	store store
+}
+
+type store struct {
+	conn   net.Conn
+	reader *storage.Reader
 }
 
 func NewWarden() Warden {
@@ -18,7 +25,7 @@ func NewWarden() Warden {
 	if err != nil {
 		panic(err)
 	}
-	return Warden{store: conn}
+	return Warden{store: store{conn, storage.NewReader(conn)}}
 }
 
 func (ward *Warden) NewPrisoner(w http.ResponseWriter, r *http.Request) {
