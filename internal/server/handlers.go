@@ -1,9 +1,6 @@
 package server
 
 import (
-	"crypto/rand"
-	"crypto/sha256"
-	"encoding/base64"
 	"fmt"
 	"net"
 	"net/http"
@@ -23,11 +20,7 @@ type store struct {
 	reader *storage.Reader
 }
 
-func NewWarden() Warden {
-	conn, err := net.Dial("tcp", "localhost:6379")
-	if err != nil {
-		panic(err)
-	}
+func NewWarden(conn net.Conn) Warden {
 	return Warden{store: store{conn, storage.NewReader(conn)}}
 }
 
@@ -71,19 +64,4 @@ func stripUser(r *http.Request) (string, error) {
 		return "", fmt.Errorf("invalid or unspecified user '%s'", user)
 	}
 	return user, nil
-}
-
-func generateAPIKey() (string, error) {
-	b := make([]byte, 32)
-	_, err := rand.Read(b)
-	if err != nil {
-		return "", err
-	}
-	return base64.URLEncoding.EncodeToString(b), nil
-}
-
-func hashString(s string) string {
-	h := sha256.New()
-	h.Write([]byte(s))
-	return base64.URLEncoding.EncodeToString(h.Sum(nil))
 }

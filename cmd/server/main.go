@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net"
 	"net/http"
 
 	"github.com/jcpage573/prisoners-dilemma/internal/server"
@@ -11,8 +12,14 @@ func main() {
 	// New mux
 	mux := http.NewServeMux()
 
+	// Connect to the datastore
+	conn, err := net.Dial("tcp", "localhost:6379")
+	if err != nil {
+		panic(err)
+	}
+
 	// Handler
-	warden := server.NewWarden()
+	warden := server.NewWarden(conn)
 
 	// Register public routes
 	mux.HandleFunc("/test", server.TestHandler)
@@ -25,7 +32,7 @@ func main() {
 	authMux.HandleFunc("GET /user/", warden.GetPrisoner)
 
 	// Wrap the authMux in auth middleware
-	authHandler := server.NewAuth(authMux)
+	authHandler := server.NewAuth(authMux, conn)
 
 	// Add the authenticated routes to the main mux
 	mux.Handle("/", authHandler)
