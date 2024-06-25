@@ -55,7 +55,7 @@ func (ward *Warden) GetPrisoner(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("GETPRISREQ", user, "!!")
+	w.Write([]byte(user))
 }
 
 func stripUser(r *http.Request) (string, error) {
