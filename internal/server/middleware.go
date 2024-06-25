@@ -23,7 +23,7 @@ const keyHeaderName string = "X-PRISONER-KEY"
 
 type Auth struct {
 	handler http.Handler
-	store   store
+	store   store // `store` has a net.Conn to the datastore and a reader on that conn
 }
 
 func (a *Auth) ServeHTTP(w http.ResponseWriter, r *http.Request) {
